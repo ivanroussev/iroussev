@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: your-dockerhub-username/ivan-portfolio
+  repository: iroussevcom/site
   tag: latest
   pullPolicy: Always
 
