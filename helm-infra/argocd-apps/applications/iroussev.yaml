@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/IvanRoussev/iroussev.com
     targetRevision: main
-    path: helm-infra/applications/iroussev.com
+    path: helm-infra/applications/iroussevcom
     helm:
       valueFiles:
         - values.yaml
