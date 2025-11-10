@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/IvanRoussev/iroussev.com
+    repoURL: https://github.com/IvanRoussev/iroussev
     targetRevision: main
     path: helm-infra/applications/iroussevcom
     helm:
