@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ivan-portfolio.fullname" . }}
+  name: {{ include "iroussevcom.fullname" . }}
   labels:
     app: {{ include "ivan-portfolio.name" . }}
 spec:
