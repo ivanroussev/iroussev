@@ -1,0 +1,6 @@
+apiVersion: v2
+name: iroussevcom
+description: "Helm chart for Ivan Roussev personal site React app"
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
