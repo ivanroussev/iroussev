@@ -16,6 +16,7 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    acme.cert-manager.io/http01-edit-in-place: "true"
   path: /
   pathType: Prefix
   hosts:
