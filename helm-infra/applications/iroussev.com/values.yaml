@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: your-dockerhub-username/ivan-portfolio
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+  hostname: iroussev.com
+  path: /
+  pathType: Prefix
+  tls: true
+  tlsSecretName: iroussev-com-tls

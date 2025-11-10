@@ -8,15 +8,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/IvanRoussev/iroussev
+    repoURL: https://github.com/IvanRoussev/iroussev.com
     targetRevision: main
-    path: helm-infra/applications/iroussev
+    path: helm-infra/applications/iroussev.com
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: iroussev
+    namespace: default
   syncPolicy:
     automated:
       prune: true
