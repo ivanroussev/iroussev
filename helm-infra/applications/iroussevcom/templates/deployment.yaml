@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "iroussevcom.fullname" . }}
+  name: iroussev
   labels:
-    app: {{ include "ivan-portfolio.name" . }}
+    app: iroussev
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "ivan-portfolio.name" . }}
+      app: iroussev
   template:
     metadata:
       labels:
-        app: {{ include "ivan-portfolio.name" . }}
+        app: iroussev
     spec:
       containers:
         - name: {{ .Chart.Name }}

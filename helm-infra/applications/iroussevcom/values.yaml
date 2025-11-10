@@ -16,8 +16,11 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-staging
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
-  hostname: iroussev.com
   path: /
   pathType: Prefix
-  tls: true
-  tlsSecretName: iroussev-com-tls
+  hosts:
+    - iroussev.com
+  tls:
+    - secretName: iroussev-tls
+      hosts:
+        - iroussev.com
