@@ -17,6 +17,10 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     acme.cert-manager.io/http01-edit-in-place: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /.well-known/acme-challenge/ {
+        allow all;
+      }
   path: /
   pathType: Prefix
   hosts:
