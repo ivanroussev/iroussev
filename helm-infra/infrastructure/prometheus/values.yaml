@@ -342,7 +342,7 @@ prometheus:
     ## Do not set both `configMapOverrideName` and `configFromSecret` simultaneously.
     ## Use either `configMapOverrideName` or `configFromSecret`.
     ## If `configFromSecret` is defined, a ConfigMap resource will NOT be generated.
-    configFromSecret: ""
+    configFromSecret: "prometheus-additional-scrape-configs"
 
     ## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.server.configMapOverrideName}}
     ## Defining configMapOverrideName will cause templates/server-configmap.yaml
