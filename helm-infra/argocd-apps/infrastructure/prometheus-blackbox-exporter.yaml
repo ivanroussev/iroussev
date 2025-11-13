@@ -11,6 +11,25 @@ spec:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: prometheus-blackbox-exporter
     targetRevision: "11.4.2"
+    helm:
+      # Add a custom module that uses basic auth for Jenkins. Username/password are stored
+      # here for simplicity; consider using SealedSecrets or a secrets manager for production.
+      values: |-
+        config:
+          modules:
+            http_jenkins:
+              prober: http
+              timeout: 5s
+              http:
+                valid_http_versions: ["HTTP/1.1","HTTP/2"]
+                method: GET
+                headers:
+                  User-Agent: "blackbox-exporter/monitor"
+                basic_auth:
+                  username: "monitor"
+                  password: "monitor"
+                tls_config:
+                  insecure_skip_verify: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitor
