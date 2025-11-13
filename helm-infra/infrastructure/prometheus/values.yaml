@@ -338,11 +338,12 @@ prometheus:
       #   secretName: prom-secret-files
       #   readOnly: true
 
-    ## Prometheus server configuration from a secret
-    ## Do not set both `configMapOverrideName` and `configFromSecret` simultaneously.
-    ## Use either `configMapOverrideName` or `configFromSecret`.
-    ## If `configFromSecret` is defined, a ConfigMap resource will NOT be generated.
-    configFromSecret: "prometheus-additional-scrape-configs"
+  ## Prometheus server configuration from a secret
+  ## Do not set both `configMapOverrideName` and `configFromSecret` simultaneously.
+  ## Use either `configMapOverrideName` or `configFromSecret`.
+  ## If `configFromSecret` is defined, a ConfigMap resource will NOT be generated.
+  ## Leave empty to let the chart generate the ConfigMap (recommended when adding additional scrape configs via Helm templates)
+    configFromSecret: ""
 
     ## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.server.configMapOverrideName}}
     ## Defining configMapOverrideName will cause templates/server-configmap.yaml
