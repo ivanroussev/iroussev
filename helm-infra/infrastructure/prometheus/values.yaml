@@ -849,7 +849,7 @@ prometheus:
             module: [http_2xx]
           static_configs:
             - targets:
-              - https://argocd.iroussev.com
+              - https://argo.iroussev.com
               - https://iroussev.com
               - https://grafana.iroussev.com
           relabel_configs:
