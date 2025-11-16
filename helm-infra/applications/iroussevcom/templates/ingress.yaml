@@ -1,39 +1,42 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: iroussev
+  name: {{ .Chart.Name }}
   labels:
-    app: iroussev
+    app: {{ .Chart.Name }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
-  {{- if .Values.ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
-    {{- end }}
-  {{- end }}
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.tls.secretName }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            pathType: {{ .pathType }}
+          {{- if .Values.backend.enabled }}
+          # API routes to backend
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: iroussev
+                name: {{ .Chart.Name }}-backend
                 port:
-                  number: 3000
+                  number: {{ .Values.backend.service.port }}
           {{- end }}
-    {{- end }}
+          {{- if .Values.frontend.enabled }}
+          # Everything else to frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Chart.Name }}-frontend
+                port:
+                  number: {{ .Values.frontend.service.port }}
+          {{- end }}
 {{- end }}

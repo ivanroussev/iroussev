@@ -1,33 +1,68 @@
-replicaCount: 1
+# Global configuration
+replicaCount: 2
 
-image:
-  repository: iroussevcom/site
-  tag: latest
-  pullPolicy: Always
+# Frontend configuration
+frontend:
+  enabled: true
+  image:
+    repository: ghcr.io/iroussev/iroussev
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
 
-service:
-  type: ClusterIP
-  port: 3000
+# Backend configuration
+backend:
+  enabled: true
+  image:
+    repository: ghcr.io/iroussev/iroussev-backend
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 3001
+  env:
+    nodeEnv: production
+    corsOrigin: "https://iroussev.com"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
 
+# Shared ingress configuration
 ingress:
   enabled: true
   className: "nginx"
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  hosts:
-    - host: iroussev.com
-      paths:
-        - path: /
-          pathType: Prefix
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  host: iroussev.com
   tls:
-    - secretName: iroussev-com-tls
-      hosts:
-        - iroussev.com
+    secretName: iroussev-com-tls
 
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
+# Autoscaling
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+# Secrets
+secrets:
+  # Frontend secrets (if any)
+  frontend:
+    name: app-secrets
+  # Backend secrets
+  backend:
+    name: backend-secrets
