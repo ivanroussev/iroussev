@@ -7,19 +7,27 @@ image:
 
 service:
   type: ClusterIP
-  port: 80
+  port: 3000
 
 ingress:
   enabled: true
-  ingressClassName: nginx
+  className: "nginx"
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  path: /
-  pathType: Prefix
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - iroussev.com
+    - host: iroussev.com
+      paths:
+        - path: /
+          pathType: Prefix
   tls:
-    - secretName: iroussev-tls
+    - secretName: iroussev-com-tls
       hosts:
         - iroussev.com
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi

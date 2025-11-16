@@ -1,33 +1,39 @@
-{{- if .Values.ingress.enabled }}
+{{- if .Values.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: iroussev
+  labels:
+    app: iroussev
+  {{- with .Values.ingress.annotations }}
   annotations:
-{{ toYaml .Values.ingress.annotations | indent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
   rules:
-{{- range .Values.ingress.hosts }}
-    - host: {{ . }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          - path: {{ $.Values.ingress.path }}
-            pathType: {{ $.Values.ingress.pathType }}
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
             backend:
               service:
                 name: iroussev
                 port:
-                  number: {{ $.Values.service.port }}
-{{- end }}
-  {{- if .Values.ingress.tls }}
-  tls:
-{{- range .Values.ingress.tls }}
-    - hosts:
-{{- range .hosts }}
-        - {{ . }}
-{{- end }}
-      secretName: {{ .secretName }}
-{{- end }}
-  {{- end }}
+                  number: 3000
+          {{- end }}
+    {{- end }}
 {{- end }}
