@@ -5,7 +5,7 @@ replicaCount: 2
 frontend:
   enabled: true
   image:
-    repository: ghcr.io/iroussev/iroussev
+    repository: iroussevcom/site-frontend
     tag: latest
     pullPolicy: Always
   service:
@@ -23,7 +23,7 @@ frontend:
 backend:
   enabled: true
   image:
-    repository: ghcr.io/iroussev/iroussev-backend
+    repository: iroussevcom/site-backend
     tag: latest
     pullPolicy: Always
   service:
