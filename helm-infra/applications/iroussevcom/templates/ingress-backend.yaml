@@ -1,14 +1,16 @@
-{{- if .Values.ingress.enabled }}
+{{- if and .Values.ingress.enabled .Values.backend.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}-backend
   labels:
     app: {{ .Chart.Name }}
-  {{- with .Values.ingress.annotations }}
+    component: backend
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # Rewrite /api/foo to /foo for backend
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   tls:
@@ -19,8 +21,7 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          {{- if .Values.backend.enabled }}
-          # API routes to backend
+          # API routes to backend with path rewriting
           - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
@@ -28,15 +29,4 @@ spec:
                 name: {{ .Chart.Name }}-backend
                 port:
                   number: {{ .Values.backend.service.port }}
-          {{- end }}
-          {{- if .Values.frontend.enabled }}
-          # Everything else to frontend
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Chart.Name }}-frontend
-                port:
-                  number: {{ .Values.frontend.service.port }}
-          {{- end }}
 {{- end }}
