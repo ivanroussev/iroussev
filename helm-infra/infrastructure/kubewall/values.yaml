@@ -4,7 +4,7 @@ ingress:
   annotations:
     # CRITICAL: Tells Nginx that the pod is using HTTPS, not HTTP
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 
   ingressClassName: "nginx"
   hosts:
@@ -13,7 +13,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-   - secretName: chart-example-tls
+   - secretName: k8s-iroussev-com-tls
      hosts:
        - k8s.iroussev.com
 
