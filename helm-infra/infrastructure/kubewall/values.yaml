@@ -1,3 +1,23 @@
+ingress:
+  enabled: true
+  className: "nginx" # Change to 'traefik' or 'public' depending on your cluster
+  annotations:
+    # CRITICAL: Tells Nginx that the pod is using HTTPS, not HTTP
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+
+  ingressClassName: "nginx"
+  hosts:
+    - host: k8s.iroussev.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+   - secretName: chart-example-tls
+     hosts:
+       - k8s.iroussev.com
+
+
 # TLS Configuration
 tls:
   # Name of the Kubernetes secret that contains the TLS certificate and key
@@ -19,7 +39,7 @@ image:
   # Pull policy for the image ("Always", "IfNotPresent", "Never")
   pullPolicy: IfNotPresent
   # Image tag to be used (can be set to a specific version or "latest")
-  tag: ""
+  tag: "0.0.14"
 
 # Service account settings
 serviceAccount:
