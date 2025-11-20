@@ -32,6 +32,7 @@ backend:
   env:
     nodeEnv: production
     corsOrigin: "https://iroussev.com"
+    clusterName: production-cluster
   resources:
     limits:
       cpu: 500m
